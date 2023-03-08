@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- <base href="$FLUTTER_BASE_HREF"> -->
+  <base href="/">
+  <meta charset="UTF-8">
+  <title>Personal Bitcoin Tip Card</title>
+  <meta name="description"
+    content="With Personal Bitcoin Tip Card, you can seamlessly share your social media links and get rewarded with Bitcoin tips, all in one convenient package.">
+  <link rel="manifest" href="manifest.json">
+
+
+  <!-- Browser meta tags & icons -->
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="personal_bitcoin_tip_card">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    var serviceWorkerVersion = null;
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer></script>
+</head>
+
+<body>
+  <style>
+    body {
+      background-color: #CED4DA;
+    }
+  </style>
+
+  <!-- Loading spinner -->
+  <div id="loading">
+    <style>
+      body {
+        overflow: hidden;
+      }
+
+      #loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.8);
+        z-index: 9999;
+      }
+
+      #loading img {
+        animation: spin 1s infinite linear;
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+    <img src="icons/bitcoin_blue.png" alt="Loading..." />
+  </div>
+
+
+  <script>
+    window.addEventListener('load', function (ev) {
+      var loading = document.querySelector('#loading');
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        }
+      }).then(function (engineInitializer) {
+        loading.classList.add('main_done');
+        return engineInitializer.initializeEngine();
+      }).then(function (appRunner) {
+        loading.classList.add('init_done');
+        return appRunner.runApp();
+      }).then(function (app) {
+        window.setTimeout(function () {
+          loading.remove();
+        }, 200);
+      });
+    });
+  </script>
+
+</body>
+
+</html>

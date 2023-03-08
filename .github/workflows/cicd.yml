@@ -1,0 +1,50 @@
+name: Build and Deploy gh-pages
+
+on:
+  push:
+    branches: [develop]
+  
+jobs:
+  build:
+    name: Build gh-pages
+    env:
+      my_secret: ${{ secrets.commit_secret }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone flutter repository with master channel
+        uses: subosito/flutter-action@v1
+      
+      - name: Run flutter doctor
+        run: flutter doctor -v
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Get all packages
+        run: make get
+
+      - name: Create env file
+        run: |
+          touch .env
+          echo "btc-pay-token=${{ secrets.BTC_PAY_TOKEN }}" >> .env
+          echo "btc-pay-username=${{ secrets.BTC_PAY_USERNAME }}" >> .env
+          echo "btc-pay-password=${{ secrets.BTC_PAY_PASSWORD }}" >> .env
+          echo "btc-pay-url=${{ secrets.BTC_PAY_URL }}" >> .env
+      
+      - name: Running build-runner
+        run: make build-runner
+      
+      - name: Creating release build of web
+        run: flutter build web --release
+      
+      - name: Pushing the release build
+        run: |
+          cd build/web
+          git init
+          git config --global user.email aniketambore0@gmail.com
+          git config --global user.name aniketambore
+          git remote add origin https://${{ secrets.commit_secret }}@github.com/aniketambore/aniketambore.github.io.git
+          git checkout -b gh-pages
+          git add .
+          git commit -m "${{ github.event.head_commit.message }}"
+          git push origin gh-pages -f

@@ -1,0 +1,45 @@
+name: personal_bitcoin_tip_card
+description: Make it easy for people to support you with just a click, by sending you Bitcoin tips right from your social card.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.0 <3.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  routemaster: ^1.0.1
+  btc_pay_api:
+    path: packages/btc_pay_api
+  btc_pay_repository:
+    path: packages/btc_pay_repository
+  component_library:
+    path: packages/component_library
+  user_local_storage:
+    path: packages/user_local_storage
+  user_repository:
+    path: packages/user_repository
+  
+  home:
+    path: packages/features/home
+  tip:
+    path: packages/features/tip
+  webview:
+    path: packages/features/webview
+  envied: ^0.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  envied_generator: ^0.3.0
+  build_runner: ^2.3.3
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+    - identity.json
