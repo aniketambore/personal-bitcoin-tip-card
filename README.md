@@ -1,16 +1,29 @@
-# personal_bitcoin_tip_card
+<div align="center">
+    <img src="web/icons/maskable_icon_x192.png?raw=true" width="80px" alt="Personal Bitcoin Tip Card"/>
+    <h1> Personal Bitcoin Tip Card </h1>
+</div>
 
-A new Flutter project.
+<h3 align="center"> A Personal Bitcoin Tip Card created using Flutter Web and BTCPay API! 🚀 </h3>
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## Screens Specification
 
-A few resources to get you started if this is your first Flutter project:
+![](screenshot/ss1.png)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Here's how it works: when someone clicks the Tip Bitcoin button, they'll be taken to a tipping form where they can enter the amount, their name, and a message. The form then generates an invoice using the BTCPay API, which the user can pay using their Bitcoin wallet.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![](screenshot/ss2.png)
+
+One of the best things about this project is that it follows the best practices for generating invoices securely. For example, the XPUB is stored only on the BTCPay API server in watch-only mode, which means that an infinite number of Bitcoin addresses can be generated for receiving tips while keeping everything secure.
+
+If you're interested in setting up your own Personal Bitcoin Tip Card, check out this blog article for more information. Let me know if you have any questions or feedback!
+
+## Contributing:
+
+ - Fork it!
+ - Create your feature branch: `git checkout -b my-new-feature`
+ - Commit your changes: `git commit -am 'Add some feature'`
+ - Push to the branch: `git push origin my-new-feature`
+ - Submit a pull request.
+
+ <h3 align="center">Show some ❤ and star the repo to support the project</h3>
