@@ -1,35 +1,54 @@
 import 'package:btc_pay_repository/btc_pay_repository.dart';
 import 'package:component_library/component_library.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_fields/form_fields.dart';
 import 'package:tip/src/tip_cubit.dart';
 import 'package:user_repository/user_repository.dart';
+import 'package:lnurl_pay_repository/lnurl_pay_repository.dart';
 
-typedef InvoiceCreated = Function(
+typedef BTCPayInvoiceCreated = Function(
     String label, String url, BuildContext context);
+
+typedef LNURLPayInvoiceCreated = Function(String invoice,
+    LNURLPayRepository lnurlPayRepository, BuildContext context);
 
 class TipScreen extends StatelessWidget {
   const TipScreen({
     super.key,
-    required this.onInvoiceCreateSuccess,
+    // required this.onInvoiceCreateSuccess,
+    required this.onBTCPayInvoiceCreatedSuccess,
+    required this.onLNURLPayInvoiceCreatedSuccess,
     required this.btcPayRepository,
+    required this.lnurlPayRepository,
     required this.userRepository,
+    required this.unitPreference,
   });
 
-  final InvoiceCreated onInvoiceCreateSuccess;
+  // final InvoiceCreated onInvoiceCreateSuccess;
+  final BTCPayInvoiceCreated onBTCPayInvoiceCreatedSuccess;
+  final LNURLPayInvoiceCreated onLNURLPayInvoiceCreatedSuccess;
   final BTCPayRepository btcPayRepository;
+  final LNURLPayRepository lnurlPayRepository;
   final UserRepository userRepository;
+  final String unitPreference;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<TipCubit>(
       create: (_) => TipCubit(
         btcPayRepository: btcPayRepository,
+        lnurlPayRepository: lnurlPayRepository,
+        userRepository: userRepository,
       ),
       child: TipScreenView(
-        onInvoiceCreateSuccess: onInvoiceCreateSuccess,
+        // onInvoiceCreateSuccess: onInvoiceCreateSuccess,
+        onBTCPayInvoiceCreatedSuccess: onBTCPayInvoiceCreatedSuccess,
+        onLNURLPayInvoiceCreatedSuccess: onLNURLPayInvoiceCreatedSuccess,
         userRepository: userRepository,
+        isBtcUnit: unitPreference == 'tip-btc' ? true : false,
+        lnurlPayRepository: lnurlPayRepository,
       ),
     );
   }
@@ -38,11 +57,18 @@ class TipScreen extends StatelessWidget {
 class TipScreenView extends StatelessWidget {
   const TipScreenView({
     super.key,
-    required this.onInvoiceCreateSuccess,
+    required this.onBTCPayInvoiceCreatedSuccess,
+    required this.onLNURLPayInvoiceCreatedSuccess,
     required this.userRepository,
+    required this.isBtcUnit,
+    required this.lnurlPayRepository,
   });
-  final InvoiceCreated onInvoiceCreateSuccess;
+  // final InvoiceCreated onInvoiceCreateSuccess;
+  final BTCPayInvoiceCreated onBTCPayInvoiceCreatedSuccess;
+  final LNURLPayInvoiceCreated onLNURLPayInvoiceCreatedSuccess;
   final UserRepository userRepository;
+  final bool isBtcUnit;
+  final LNURLPayRepository lnurlPayRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -79,8 +105,14 @@ class TipScreenView extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(20),
                       child: _TipForm(
-                        onInvoiceCreateSuccess: onInvoiceCreateSuccess,
+                        // onInvoiceCreateSuccess: onInvoiceCreateSuccess,
+                        onBTCPayInvoiceCreatedSuccess:
+                            onBTCPayInvoiceCreatedSuccess,
+                        onLNURLPayInvoiceCreatedSuccess:
+                            onLNURLPayInvoiceCreatedSuccess,
                         userRepository: userRepository,
+                        isBtcUnit: isBtcUnit,
+                        lnurlPayRepository: lnurlPayRepository,
                       ),
                     ),
                   ],
@@ -96,11 +128,19 @@ class TipScreenView extends StatelessWidget {
 
 class _TipForm extends StatefulWidget {
   const _TipForm({
-    required this.onInvoiceCreateSuccess,
+    // required this.onInvoiceCreateSuccess,
     required this.userRepository,
+    required this.isBtcUnit,
+    required this.onBTCPayInvoiceCreatedSuccess,
+    required this.onLNURLPayInvoiceCreatedSuccess,
+    required this.lnurlPayRepository,
   });
-  final InvoiceCreated onInvoiceCreateSuccess;
+  // final InvoiceCreated onInvoiceCreateSuccess;
   final UserRepository userRepository;
+  final bool isBtcUnit;
+  final BTCPayInvoiceCreated onBTCPayInvoiceCreatedSuccess;
+  final LNURLPayInvoiceCreated onLNURLPayInvoiceCreatedSuccess;
+  final LNURLPayRepository lnurlPayRepository;
 
   @override
   State<_TipForm> createState() => _TipFormState();
@@ -129,7 +169,7 @@ class _TipFormState extends State<_TipForm> {
 
     _amountFocusNode.addListener(() {
       if (!_amountFocusNode.hasFocus) {
-        cubit.onAmountUnfocused();
+        cubit.onAmountBTCUnfocused();
       }
     });
   }
@@ -150,8 +190,16 @@ class _TipFormState extends State<_TipForm> {
       listener: (context, state) {
         if (state.submissionStatus == SubmissionStatus.success &&
             state.invoice != null) {
-          widget.onInvoiceCreateSuccess(
-              'Tip Me', state.invoice?.checkoutLink ?? '', context);
+          if (widget.isBtcUnit) {
+            widget.onBTCPayInvoiceCreatedSuccess(
+                'Tip Me', state.invoice?.checkoutLink ?? '', context);
+          } else {
+            widget.onLNURLPayInvoiceCreatedSuccess(
+                state.invoice?.checkoutLink ?? '',
+                widget.lnurlPayRepository,
+                context);
+          }
+
           return;
         }
 
@@ -177,7 +225,10 @@ class _TipFormState extends State<_TipForm> {
         final nameError = state.name.isNotValid ? state.name.error : null;
         final messageError =
             state.message.isNotValid ? state.message.error : null;
-        final amountError = state.amount.isNotValid ? state.amount.error : null;
+        final amountBTCError =
+            state.amountBTC.isNotValid ? state.amountBTC.error : null;
+        final amountSATError =
+            state.amountSAT.isNotValid ? state.amountSAT.error : null;
         final isSubmissionInProgress =
             state.submissionStatus == SubmissionStatus.inProgress;
 
@@ -270,22 +321,43 @@ class _TipFormState extends State<_TipForm> {
                         ),
                       ),
                       const SizedBox(height: Spacing.small),
-                      TipTextField(
-                        hintText: '0.00001',
-                        focusNode: _amountFocusNode,
-                        keyboardType: TextInputType.number,
-                        onChanged: (value) => cubit
-                            .onAmountChanged(double.tryParse(value) ?? 0.0),
-                        textInputAction: TextInputAction.done,
-                        autoCorrect: false,
-                        enabled: !isSubmissionInProgress,
-                        errorText: amountError == null
-                            ? null
-                            : (amountError == AmountValidationError.dust
-                                ? 'Please use Lightning for smaller tips. Thank you.'
-                                : 'This amount is not valid.'),
-                        onEditingComplete: cubit.onSubmit,
-                      ),
+                      widget.isBtcUnit
+                          ? TipTextField(
+                              hintText: '0.00001',
+                              focusNode: _amountFocusNode,
+                              keyboardType: TextInputType.number,
+                              onChanged: (value) => cubit.onAmountBTCChanged(
+                                  double.tryParse(value) ?? 0.0),
+                              textInputAction: TextInputAction.done,
+                              autoCorrect: false,
+                              enabled: !isSubmissionInProgress,
+                              errorText: amountBTCError == null
+                                  ? null
+                                  : (amountBTCError ==
+                                          AmountBTCValidationError.dust
+                                      ? 'Please use Lightning for smaller tips. Thank you.'
+                                      : 'This amount is not valid.'),
+                              onEditingComplete: () =>
+                                  cubit.onSubmit(widget.isBtcUnit),
+                            )
+                          : TipTextField(
+                              hintText: '1',
+                              focusNode: _amountFocusNode,
+                              keyboardType: TextInputType.number,
+                              onChanged: (value) => cubit
+                                  .onAmountSATChanged(int.tryParse(value) ?? 1),
+                              textInputAction: TextInputAction.done,
+                              autoCorrect: false,
+                              enabled: !isSubmissionInProgress,
+                              errorText: amountSATError == null
+                                  ? null
+                                  : (amountSATError ==
+                                          AmountSATValidationError.onchain
+                                      ? 'Please use On-Chain for bigger tips. Thank you.'
+                                      : 'This amount is not valid.'),
+                              onEditingComplete: () =>
+                                  cubit.onSubmit(widget.isBtcUnit),
+                            ),
                     ],
                   ),
                 ),
@@ -302,9 +374,10 @@ class _TipFormState extends State<_TipForm> {
                       ),
                       const SizedBox(height: Spacing.small),
                       TipTextField(
-                        hintText: 'BTC',
+                        hintText: widget.isBtcUnit ? 'BTC' : 'SAT',
                         enabled: false,
-                        controller: TextEditingController(text: 'BTC'),
+                        controller: TextEditingController(
+                            text: widget.isBtcUnit ? 'BTC' : 'SAT'),
                       ),
                     ],
                   ),
@@ -321,7 +394,13 @@ class _TipFormState extends State<_TipForm> {
                   )
                 : ExpandedElevatedButton(
                     label: 'Tip',
-                    onTap: cubit.onSubmit,
+                    onTap: () => cubit.onSubmit(widget.isBtcUnit),
+                    icon: Icon(
+                      widget.isBtcUnit
+                          ? CupertinoIcons.bitcoin
+                          : Icons.bolt_sharp,
+                    ),
+                    color: widget.isBtcUnit ? persianBlue : orange,
                   ),
           ],
         );

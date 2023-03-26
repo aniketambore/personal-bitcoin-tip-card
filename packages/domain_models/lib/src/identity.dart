@@ -10,6 +10,7 @@ class Identity extends Equatable {
     required this.imageUrl,
     required this.socialList,
     required this.projectUrl,
+    required this.lud16,
   });
 
   final String name;
@@ -20,6 +21,7 @@ class Identity extends Equatable {
   final String imageUrl;
   final List<Social> socialList;
   final String projectUrl;
+  final String lud16;
 
   @override
   List<Object?> get props => [
@@ -31,6 +33,7 @@ class Identity extends Equatable {
         imageUrl,
         socialList,
         projectUrl,
+        lud16,
       ];
 }
 

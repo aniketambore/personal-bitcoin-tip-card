@@ -4,14 +4,16 @@ class TipState extends Equatable {
   const TipState({
     this.name = const Name.unvalidated(),
     this.message = const Message.unvalidated(),
-    this.amount = const Amount.unvalidated(),
+    this.amountBTC = const AmountBTC.unvalidated(),
+    this.amountSAT = const AmountSAT.unvalidated(),
     this.submissionStatus = SubmissionStatus.idle,
     this.invoice,
   });
 
   final Name name;
   final Message message;
-  final Amount amount;
+  final AmountBTC amountBTC;
+  final AmountSAT amountSAT;
   final SubmissionStatus submissionStatus;
 
   final Invoice? invoice;
@@ -19,14 +21,16 @@ class TipState extends Equatable {
   TipState copyWith({
     Name? name,
     Message? message,
-    Amount? amount,
+    AmountBTC? amountBTC,
+    AmountSAT? amountSAT,
     SubmissionStatus? submissionStatus,
     Invoice? invoice,
   }) {
     return TipState(
       name: name ?? this.name,
       message: message ?? this.message,
-      amount: amount ?? this.amount,
+      amountBTC: amountBTC ?? this.amountBTC,
+      amountSAT: amountSAT ?? this.amountSAT,
       submissionStatus: submissionStatus ?? this.submissionStatus,
       invoice: invoice ?? this.invoice,
     );
@@ -36,7 +40,8 @@ class TipState extends Equatable {
   List<Object?> get props => [
         name,
         message,
-        amount,
+        amountBTC,
+        amountSAT,
         submissionStatus,
       ];
 }

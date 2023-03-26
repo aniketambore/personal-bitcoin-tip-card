@@ -1,0 +1,13 @@
+name: lnurl_pay_repository
+publish_to: 'none'
+
+environment:
+  sdk: '>=2.19.0 <3.0.0'
+
+dependencies:
+  lnurl_pay_api:
+    path: ../lnurl_pay_api
+
+dev_dependencies: 
+  lints: ^2.0.1
+  test: ^1.24.0

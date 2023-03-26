@@ -12,3 +12,4 @@ const woodSmoke = Color(0xFF18191F);
 const trout = Color(0xFF474A57);
 const shark = Color(0xFF212529);
 const ghost = Color(0XFFCED4DA);
+const treePoppy = Color(0xFFF7931A);

@@ -17,6 +17,7 @@ IdentityLM _$IdentityLMFromJson(Map<String, dynamic> json) => IdentityLM(
           .map((e) => SocialLM.fromJson(e as Map<String, dynamic>))
           .toList(),
       projectUrl: json['project_url'] as String,
+      lud16: json['lud16'] as String,
     );
 
 SocialLM _$SocialLMFromJson(Map<String, dynamic> json) => SocialLM(

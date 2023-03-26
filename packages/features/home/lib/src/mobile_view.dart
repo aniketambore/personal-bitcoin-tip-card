@@ -1,5 +1,6 @@
 import 'package:component_library/component_library.dart';
 import 'package:flutter/material.dart';
+import 'package:home/src/unit_selector.dart';
 import 'package:home/src/widgets/profile_header.dart';
 import 'package:home/src/widgets/profile_identity.dart';
 import 'package:user_repository/user_repository.dart';
@@ -7,12 +8,14 @@ import 'package:user_repository/user_repository.dart';
 class MobileView extends StatelessWidget {
   const MobileView({
     super.key,
-    required this.pushToTip,
+    // required this.pushToTip,
     required this.userRepository,
+    required this.onUnitSelected,
   });
 
-  final VoidCallback pushToTip;
+  // final VoidCallback pushToTip;
   final UserRepository userRepository;
+  final UnitSelected onUnitSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +45,10 @@ class MobileView extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: ProfileIdentity(
-                    pushToTip: pushToTip,
+                    // pushToTip: pushToTip,
                     userRepository: userRepository,
+                    isWider: false,
+                    onUnitSelected: onUnitSelected,
                   ),
                 ),
               ],

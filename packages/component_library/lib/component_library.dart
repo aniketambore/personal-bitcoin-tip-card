@@ -9,3 +9,4 @@ export 'src/themes/tip_theme.dart';
 export 'src/tip_textfield.dart';
 export 'src/generic_error_snack_bar.dart';
 export 'src/centered_circular_progress_indicator.dart';
+export 'src/qr_card.dart';

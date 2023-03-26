@@ -16,6 +16,10 @@ dependencies:
     path: packages/btc_pay_api
   btc_pay_repository:
     path: packages/btc_pay_repository
+  lnurl_pay_api:
+    path: packages/lnurl_pay_api
+  lnurl_pay_repository:
+    path: packages/lnurl_pay_repository
   component_library:
     path: packages/component_library
   user_local_storage:
@@ -29,6 +33,8 @@ dependencies:
     path: packages/features/tip
   webview:
     path: packages/features/webview
+  lnurl_invoice_screen:
+    path: packages/features/lnurl_invoice_screen
   envied: ^0.3.0
 
 dev_dependencies:

@@ -4,19 +4,22 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:home/src/desktop_view.dart';
 import 'package:home/src/launch_url.dart';
 import 'package:home/src/mobile_view.dart';
+import 'package:home/src/unit_selector.dart';
 import 'package:user_repository/user_repository.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({
     super.key,
-    required this.pushToTip,
+    // required this.pushToTip,
     required this.userRepository,
     @visibleForTesting LaunchUrl? launchUrl,
+    required this.onUnitSelected,
   }) : _launchUrl = LaunchUrl();
 
-  final VoidCallback pushToTip;
+  // final VoidCallback pushToTip;
   final UserRepository userRepository;
   final LaunchUrl _launchUrl;
+  final UnitSelected onUnitSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +35,14 @@ class HomeScreen extends StatelessWidget {
         builder: (context, constraints) {
           if (constraints.maxWidth < 700) {
             return MobileView(
-              pushToTip: pushToTip,
+              // pushToTip: pushToTip,
+              onUnitSelected: onUnitSelected,
               userRepository: userRepository,
             );
           } else {
             return DesktopView(
-              pushToTip: pushToTip,
+              // pushToTip: pushToTip,
+              onUnitSelected: onUnitSelected,
               userRepository: userRepository,
             );
           }

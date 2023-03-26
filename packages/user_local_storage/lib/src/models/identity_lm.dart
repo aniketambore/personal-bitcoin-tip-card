@@ -13,6 +13,7 @@ class IdentityLM {
     required this.imageUrl,
     required this.socialList,
     required this.projectUrl,
+    required this.lud16,
   });
 
   final String name;
@@ -27,6 +28,7 @@ class IdentityLM {
   final List<SocialLM> socialList;
   @JsonKey(name: 'project_url')
   final String projectUrl;
+  final String lud16;
 
   static const fromJson = _$IdentityLMFromJson;
 }

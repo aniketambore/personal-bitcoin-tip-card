@@ -52,4 +52,7 @@ class UserRepository {
 
   String get getProjectUrl =>
       _getValueOrDefault(identity.projectUrl, 'https://github.com/aniket');
+
+  String get getLud16 =>
+      _getValueOrDefault(identity.lud16, 'aniketambore@getalby.com');
 }

@@ -1,4 +1,4 @@
-name: tip
+name: lnurl_invoice_screen
 publish_to: 'none'
 
 environment:
@@ -9,18 +9,8 @@ dependencies:
     sdk: flutter
   component_library:
     path: ../../component_library
-  user_repository:
-    path: ../../user_repository
-  form_fields:
-    path: ../../form_fields
-  btc_pay_repository:
-    path: ../../btc_pay_repository
   lnurl_pay_repository:
     path: ../../lnurl_pay_repository
-  domain_models:
-    path: ../../domain_models
-  flutter_bloc: ^8.1.2
-  equatable: ^2.0.5
 
 dev_dependencies:
   flutter_test:

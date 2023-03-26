@@ -2,6 +2,8 @@ import 'package:btc_pay_api/btc_pay_api.dart';
 import 'package:btc_pay_repository/btc_pay_repository.dart';
 import 'package:component_library/component_library.dart';
 import 'package:flutter/material.dart';
+import 'package:lnurl_pay_api/lnurl_pay_api.dart';
+import 'package:lnurl_pay_repository/lnurl_pay_repository.dart';
 import 'package:personal_bitcoin_tip_card/routing_table.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:user_local_storage/user_local_storage.dart';
@@ -38,7 +40,9 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   late final BTCPayApi _btcPayApi;
+  late final LNURLPayAPI _lnurlPayAPI;
   late final BTCPayRepository _btcPayRepository;
+  late final LNURLPayRepository _lnurlPayRepository;
   late final dynamic _routerDelegate;
   final _lightTheme = LightTipThemeData();
   final _darkTheme = DarkTipThemeData();
@@ -55,12 +59,16 @@ class _MainAppState extends State<MainApp> {
     _btcPayRepository = BTCPayRepository(
       remoteApi: _btcPayApi,
     );
+
+    _lnurlPayAPI = LNURLPayAPI();
+    _lnurlPayRepository = LNURLPayRepository(lnurlPayAPI: _lnurlPayAPI);
     _routerDelegate = RoutemasterDelegate(
       routesBuilder: (context) {
         return RouteMap(
           routes: buildRoutingTable(
             routerDelegate: _routerDelegate,
             btcPayRepository: _btcPayRepository,
+            lnurlPayRepository: _lnurlPayRepository,
             userRepository: widget.userRepository,
           ),
         );
