@@ -16,6 +16,13 @@ Here's how it works: when someone clicks the Tip Bitcoin button, they'll be take
 
 One of the best things about this project is that it follows the best practices for generating invoices securely. For example, the XPUB is stored only on the BTCPay API server in watch-only mode, which means that an infinite number of Bitcoin addresses can be generated for receiving tips while keeping everything secure.
 
+## Update [27-03-2023]
+The Personal Bitcoin Tip Card now includes support for Lightning Network (LN) tips, which have been implemented using LNURLPay and WebLN methods. To receive LN tips, users will need to update the "**lud16**" field in their identity.json file [here](https://github.com/aniketambore/personal-bitcoin-tip-card/blob/main/identity.json#L31) with their Bitcoin Lightning Address.
+
+![](screenshot/ss3.png)
+
+![](screenshot/ss4.png)
+
 If you're interested in setting up your own Personal Bitcoin Tip Card, check out this blog article for more information. Let me know if you have any questions or feedback!
 
 ## Contributing:
